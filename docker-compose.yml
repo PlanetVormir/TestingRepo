@@ -16,8 +16,18 @@ services:
       bash -c "while ! curl http://db:5432/ 2>&1 | grep '52'; do sleep 1; done && python manage.py runserver 0.0.0.0:8000"
     volumes:
       - ./backend:/app/backend
+      - ./frontend:/app/frontend
     ports:
       - "8000:8000"
     restart: on-failure
     depends_on:
       - db
+
+  frontend:
+    build: ./frontend
+    volumes:
+      - ./frontend:/app/frontend
+      # One-way volume to use node_modules from inside image
+      - /app/frontend/node_modules
+    depends_on:
+      - backend
