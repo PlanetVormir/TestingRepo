@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_DB: "db"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_USER: "postgres"
+    ports:
+      - "5432:5432"
+
+  backend:
+    build: ./backend
+    command: >
+      bash -c "while ! curl http://db:5432/ 2>&1 | grep '52'; do sleep 1; done && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./backend:/app/backend
+    ports:
+      - "8000:8000"
+    restart: on-failure
+    depends_on:
+      - db
