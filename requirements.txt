@@ -1,1 +1,5 @@
 django
+requests
+PyJWT
+cryptography
+python-dotenv
