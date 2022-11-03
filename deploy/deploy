@@ -5,6 +5,12 @@ if [ ! -d venv ]; then
   python3 -m virtualenv venv
 fi
 
+source /home/git/.bashrc
+cd frontend/ || exit
+npm install --production
+npm run build --production
+
+cd ..
 source venv/bin/activate
 pip install -r backend/requirements.txt
 
