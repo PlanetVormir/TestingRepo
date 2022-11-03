@@ -1,9 +1,8 @@
 FROM node:16-alpine
+ENV NODE_ENV=production
 
 WORKDIR /app/frontend
 
-ENV PATH /app/node_modules/.bin:$PATH
-
 COPY . .
-RUN npm install
-RUN npm run build
+RUN npm install --production
+RUN npm run build --prod
