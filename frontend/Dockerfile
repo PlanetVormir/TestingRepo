@@ -4,11 +4,6 @@ WORKDIR /app/frontend
 
 ENV PATH /app/node_modules/.bin:$PATH
 
-COPY package.json .
-
-RUN npm install
-
 COPY . .
+RUN npm install
 RUN npm run build
-
-COPY build /app/frontend/
