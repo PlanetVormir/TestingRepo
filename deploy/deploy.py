@@ -16,9 +16,15 @@ api = GithubApp(
 
 deployment_id = api.create_deployment(OWNER, REPOSITORY)["id"]
 
-process = Popen("sudo -S docker compose up -d".split(), stdin=PIPE, stdout=PIPE, stderr=PIPE)
-process.communicate(os.environ.get("SUDO_PASSWORD").encode())
-stdout, err = process.stdout.read().decode(), process.stderr.read().decode()
-print(stdout, err, sep="\n\n")
+err = False
+try:
+    process = Popen("sudo -S docker compose up -d".split(), stdin=PIPE, stdout=PIPE, stderr=PIPE)
+    process.communicate(os.environ.get("SUDO_PASSWORD").encode())
+except Exception as e:
+    print(e)
+    err = True
 
-api.update_deployment_status(OWNER, REPOSITORY, deployment_id, state="success")
+if not err:
+    api.update_deployment_status(OWNER, REPOSITORY, deployment_id, state="success")
+else:
+    api.update_deployment_status(OWNER, REPOSITORY, deployment_id, state="error")
