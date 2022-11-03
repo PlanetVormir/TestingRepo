@@ -2,16 +2,21 @@
 
 # Create virtualenv if does not exists and install dependencies
 if [ ! -d venv ]; then
+  echo "Virtual Environment does not exist, creating virtual environment..."
   python3 -m virtualenv venv
 fi
 
+echo "Building frontend..."
 source /home/git/.bashrc
 cd frontend/ || exit
 npm install --production
 npm run build --production
+echo "Done building frontend!"
 
+echo "Starting backend..."
 cd ..
 source venv/bin/activate
 pip install -r backend/requirements.txt
 
 python3 deploy/deploy.py
+echo "Deployment complete!"
