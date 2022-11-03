@@ -1,3 +1,12 @@
+FROM node:16-alpine
+ENV NODE_ENV=production
+
+WORKDIR /app/frontend
+
+COPY . .
+RUN npm install --production
+RUN npm run build --prod
+
 FROM python:3.10
 
 RUN apt-get update && apt-get install -y --no-install-recommends postgresql-client \
