@@ -6,6 +6,9 @@ ENV PATH /app/node_modules/.bin:$PATH
 
 COPY package.json .
 
-RUN npm install --silent
+RUN npm install
 
-COPY build build
+COPY . .
+RUN npm run build
+
+COPY build /app/frontend/
