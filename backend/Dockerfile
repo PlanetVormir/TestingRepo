@@ -10,7 +10,10 @@ RUN npm run build --prod
 FROM python:3.10
 
 RUN apt-get update && apt-get install -y --no-install-recommends postgresql-client \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+
+WORKDIR /app
+COPY --from=node /app/frontend .
 
 WORKDIR /app/backend
 COPY requirements.txt /app/backend
