@@ -17,7 +17,7 @@ api = GithubApp(
 deployment_id = api.create_deployment(OWNER, REPOSITORY)["id"]
 
 process = Popen("sudo -S docker compose up -d".split(), stdin=PIPE, stdout=PIPE, stderr=PIPE)
-process.communicate(input("Enter production password: ").encode())
+process.communicate(os.environ.get("SUDO_PASSWORD").encode())
 stdout, err = process.stdout.read().decode(), process.stderr.read().decode()
 print(stdout, err, sep="\n\n")
 
